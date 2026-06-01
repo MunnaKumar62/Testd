@@ -1,0 +1,660 @@
+
+List<Student> list = Arrays.asList(s1,s2,s3,s4,s5,s6);
+	//	47) Given a list of students, write a Java 8 code to partition the students who got above 60% from those who didn’t?
+		System.out.println("gretherThan_60 :: \n");
+		List<Student> gretherThan_60 = list.stream().filter(s->s.getPercentage() >60).collect(Collectors.toList());
+		gretherThan_60.forEach(System.out::println);
+		
+		System.out.println();
+		System.out.println("lessThan_60 :: \n");
+		List<Student> lessThan_60 = list.stream().filter(s->s.getPercentage() <60).collect(Collectors.toList());
+		lessThan_60.forEach(System.out::println);
+		
+		// 2nd ways
+		Map<Boolean, List<Student>> partitioningBy = list.stream().collect(Collectors.partitioningBy(s->s.getPercentage() > 60));
+		List<Student> gretherThan_2_60 = partitioningBy.get(true);
+		System.out.println("\n gretherThan_2_60 :: \n");
+		gretherThan_2_60.stream().forEach(System.out::println);
+		
+		List<Student> lessThan_2_60 = partitioningBy.get(false);
+		System.out.println("\nlessThan_2_60 :: \n");
+		lessThan_2_60.stream().forEach(System.out::println);
+		
+		//48) Given a list of students, write a Java 8 code to get the names of top 3 performing students?
+		List<Student> sortedData = list.stream().sorted(Comparator.comparing(Student::getPercentage).reversed()).collect(Collectors.toList());
+		System.out.println("\n sortedData \n ");
+		sortedData.forEach(System.out::println);
+		
+		System.out.println();
+		List<Student> names_of_top_3 = list.stream().sorted(Comparator.comparing(Student::getPercentage).reversed()).limit(3).collect(Collectors.toList());
+		System.out.println("names_of_top_3");
+		names_of_top_3.forEach(System.out::println);
+		
+		//	49) Given a list of students, how do you get the name and percentage of each student?
+		
+		Map<String, Double> get_the_name_and_percentage = list.stream().filter(e->e.getPercentage() >60 ).collect(Collectors.toMap(Student::getName, Student::getPercentage));
+		System.out.println("get_the_name_and_percentage");
+		System.out.println(get_the_name_and_percentage);
+		System.out.println("");
+		get_the_name_and_percentage.entrySet().stream().forEach(entry ->System.out.println(entry.getKey()+" : "+entry.getValue()));
+		
+		//50) Given a list of students, how do you get the subjects offered in the college?
+		List<String> subjects_offered = list.stream().map(Student::getSubject).distinct().collect(Collectors.toList());
+		System.out.println("\n subjects_offered \n");
+		subjects_offered.stream().forEach(System.out::println);
+		
+		//	2nd ways
+		Set<String> subjects_offered2 = list.stream().map(Student::getSubject).collect(Collectors.toSet());
+		System.out.println("\n subjects_offered2 \n");
+		subjects_offered2.stream().forEach(System.out::println);
+
+		//	51) Given a list of students, write a Java 8 code to get highest, lowest and average percentage of students?
+		DoubleSummaryStatistics doubleSummaryStatistics = list.stream().collect(Collectors.summarizingDouble(Student::getPercentage));
+		double max = doubleSummaryStatistics.getMax();
+		double min = doubleSummaryStatistics.getMin();
+		double sum = doubleSummaryStatistics.getSum();
+		long count = doubleSummaryStatistics.getCount();
+		double average = doubleSummaryStatistics.getAverage();
+		
+		System.out.println("\n max :: "+ max);
+		System.out.println("min :: "+ min);
+		System.out.println("sum :: "+ sum);
+		System.out.println("count :: "+ count);
+		System.out.println("average :: "+ average);
+		
+		Long count2 = list.stream().collect(Collectors.counting());
+		System.out.println("count2 :: "+count2);
+		long count3 = list.stream().count();
+		System.out.println("count3 :: "+count3);
+		
+		//	53) How do you get the students grouped by subject from the given list of students?
+		Map<String, List<Student>> grouped_by_subject = list.stream().collect(Collectors.groupingBy(Student::getSubject));
+		System.out.println("\n grouped_by_subject \n");
+		grouped_by_subject.entrySet().stream().forEach(System.out::println);
+		
+		//Print the Duplicate characters with Occurence.
+		String input="munnakumar";
+		input.chars().mapToObj(e->(char)e).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()))
+		.entrySet().stream().filter(val->val.getValue()>1).forEach(entry->System.out.println(entry.getKey()+": "+entry.getValue()));
+		
+		//occurance of word
+		System.out.println("\n occurance of word flatMap \n");
+		List<String> str = List.of("capgemini I love you", "capgemini I love you", "you love me capgemini");
+		 Map<String, Long> occurance_of_word = str.stream().flatMap(line -> Arrays.stream(line.split(" "))).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+		occurance_of_word.entrySet().stream().forEach(entry->System.out.println(entry.getKey()+": "+entry.getValue()));
+		
+		//occurance of sentences	
+		System.out.println("\n occurance_of_sentences \n");
+		 Map<String, Long> occurance_of_sentences = str.stream().collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+		 occurance_of_sentences.entrySet().stream().forEach(entry->System.out.println(entry.getKey()+": "+entry.getValue()));
+
+		 List<String> words = Arrays.asList("hello", "world");
+		 List<Integer> lengths = words.stream().map(String::length).collect(Collectors.toList());
+		 System.out.println(lengths); // Output: [5, 5]
+		 List<String> uppercase = words.stream().map(String::toUpperCase).collect(Collectors.toList());
+		 System.out.println("uppercase :: "+uppercase);
+
+		 List<String> sentences = Arrays.asList("hello world", "java stream");
+		 List<String> flatMap = sentences.stream().flatMap(sentence -> Arrays.stream(sentence.split(" "))).collect(Collectors.toList());
+		 System.out.println("flatMap :: "+flatMap); // Output: [hello, world, java, stream]
+		 
+=========================================
+List<Employee> list = Arrays.asList(e1,e2,e3,e4,e5,e6);
+	
+	String str="welcome to capgemini";
+	List<String> reverse1 = Arrays.stream(str.split(" ")).collect(Collectors.toList());
+	Collections.reverse(reverse1);
+	System.out.println("reverse1 :: "+reverse1);
+	
+	String reverse2 = reverse1.stream().collect(Collectors.joining(" "));
+	System.out.println("reverse2 :: "+ reverse2);
+	
+	StringBuilder builder_reverse3 = new StringBuilder();
+	String[] split = str.split(" ");
+	for(int i=split.length-1;i>=0;i--) {
+		builder_reverse3.append(split[i]).append(" ");
+	}
+	System.out.println("builder_reverse3 :: "+builder_reverse3);
+	
+	System.out.println("============");
+	List<String> list2 = Arrays.asList(str.split(" "));
+	Collections.reverse(list2);
+	String reverse4 = String.join(" ", list2);
+	System.out.println("reverse4 :: "+reverse4);
+	
+	String [] tech= {"java","spring","hibernate","spring","hibernate","microservices"};
+	Map<Integer, List<String>> map = Arrays.stream(tech).collect(Collectors.groupingBy(String::length));
+	System.out.println("Map :: "+map);
+	
+	String maxlength = Arrays.stream(tech).max(Comparator.comparing(String::length)).get();
+	System.out.println(maxlength);
+	Map<String, Long> countWords = Arrays.stream(tech).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+	
+	System.out.println("countWords :: "+ countWords);
+	Iterator<Entry<String, Long>> iterator = countWords.entrySet().iterator();
+	while(iterator.hasNext()) {
+		Entry<String, Long> next = iterator.next();
+		String key = next.getKey();
+		Long value = next.getValue();
+		System.out.println(key+" ::  "+value);
+	}
+	 int maxLength = Arrays.stream(tech).mapToInt(s -> s.length()).max().getAsInt();
+		System.out.println("maxLength :: "+maxLength);
+	
+	//list.stream().filter(e -> e.getSalary()!=null).collect(Collectors.toMap(Employee :: getId, Employee :: getName, Employee :: getSalary, Employee :: getId);
+	
+	
+	//int sum = list.stream().filter(e->e.getSalary()!=null).mapToInt(Employee::getSalary).sum();
+	//System.out.println(sum);
+	
+		int []a= {1,2,3,4}; 
+		int []b= {1,2,33,44}; 
+		
+		for(int i=0;i<a.length;i++) {
+			boolean isUnique=true;
+			for(int j=0;j<b.length;j++) {
+				if(a[i]==b[j]) {
+					isUnique=false;
+					break;
+				//	System.out.println("**************duplicate*********"+a[i]);
+				}
+			}
+			if(isUnique) {
+			System.out.println("*****unique****"+a[i]);
+			}
+		}
+		List<Integer> listA = Arrays.stream(a).boxed().collect(Collectors.toList());
+		List<Integer> listB = Arrays.stream(b).boxed().collect(Collectors.toList());
+		
+		List<Integer> duplicate = listA.stream().filter(e->listB.contains(e)).collect(Collectors.toList());
+		System.out.println("duplicate :: "+ duplicate);
+		
+		List<Integer> unique = listA.stream().filter(e->!listB.contains(e)).collect(Collectors.toList());
+		System.out.println("unique :: "+ unique);		 
+=========================================	
+32
+https://javaconceptoftheday.com/java-8-interview-sample-coding-questions/
+
+60
+https://javaconceptoftheday.com/java-8-interview-questions-and-answers/	 
+=========================================		 
+=========================================	
+
+//	1) Given a list of integers, separate odd and even numbers?	
+
+		List<Integer> list = Arrays.asList(71, 18, 42, 21, 67, 32, 95, 14, 56, 87);
+	
+		Map<Boolean, List<Integer>> map = list.stream().collect(Collectors.partitioningBy(e->e%2==0));
+		System.out.println("Even Number :: "+map.get(true));
+		System.out.println("Odd Number :: "+map.get(false));
+		map.get(true).forEach(System.out::println);
+
+		
+	//	2) How do you remove duplicate elements from a list using Java 8 streams?
+		List<String> listOfStrings = Arrays.asList("Java", "Python", "C#", "Java", "Kotlin", "Python");
+		List<String> remove_duplicate_elements = listOfStrings.stream().distinct().collect(Collectors.toList());
+		System.out.println("remove_duplicate_elements :: "+remove_duplicate_elements);
+		
+	//	3) How do you find frequency of each character in a string using Java 8 streams?
+		String inputString = "Java Concept Of The Day";
+		Map<Character, Long> frequency_of_each_character = inputString.chars().mapToObj(i->(char)i).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+		System.out.println("frequency_of_each_character :: "+ frequency_of_each_character);
+		
+	//	4) How do you find frequency of each element in an array or a list?
+		 List<String> stationeryList = Arrays.asList("Pen", "Eraser", "Note Book", "Pen", "Pencil", "Stapler", "Note Book", "Pencil");
+		 Map<String, Long> frequency_of_each_element = stationeryList.stream().collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+		 System.out.println("frequency_of_each_element :: "+frequency_of_each_element);
+		 
+	//	5) How do you sort the given list of decimals in reverse order?
+		 List<Double> decimalList = Arrays.asList(12.45, 23.58, 17.13, 42.89, 33.78, 71.85, 56.98, 21.12);
+		 List<Double> reverse_order = decimalList.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());   
+		 //System.out.println("reverse_order :: "+ reverse_order);
+		 reverse_order.forEach(System.out::println);
+		 
+	//	6) Given a list of strings, join the strings with ‘[‘ as prefix, ‘]’ as suffix and ‘,’ as delimiter?
+		 List<String> listOfStringsData = Arrays.asList("Facebook", "Twitter", "YouTube", "WhatsApp", "LinkedIn");
+		 String delimiter = listOfStringsData.stream().collect(Collectors.joining(",", "[", "]"));   
+		 System.out.println("delimiter :: "+ delimiter);
+		 
+	//	7) From the given list of integers, print the numbers which are multiples of 5?
+
+		 List<Integer> listOfIntegers = Arrays.asList(45, 12, 56, 15, 24, 75, 31, 89);
+		 List<Integer> multiples_of_5 = listOfIntegers.stream().filter(num->num%5==0).collect(Collectors.toList());   
+		 System.out.println("multiples_of_5 :: "+multiples_of_5);
+		 
+		 System.out.println();
+	//	8) Given a list of integers, find maximum and minimum of those numbers?	 
+		 List<Integer> listOfIntegers_max_Min = Arrays.asList(45, 12, 56, 15, 24, 75, 31, 89);
+		 List<Integer> sorted = listOfIntegers_max_Min.stream().sorted().collect(Collectors.toList());
+		 System.out.println("sorted :: "+ sorted);
+		 
+		 Integer MaxNumber = listOfIntegers_max_Min.stream().max(Comparator.naturalOrder()).get();
+	     System.out.println("MaxNumber :: "+ MaxNumber); 
+	     
+	     // second max
+	     Integer second_max = listOfIntegers_max_Min.stream().sorted(Comparator.reverseOrder()).skip(1).findFirst().get();
+	     System.out.println("second_max :: "+ second_max);
+	     
+	     Integer minNumber = listOfIntegers_max_Min.stream().min(Comparator.naturalOrder()).get();
+	     System.out.println("minNumber :: "+minNumber);
+		 
+	     Integer seconfMin = listOfIntegers_max_Min.stream().sorted(Comparator.naturalOrder()).skip(1).findFirst().get();
+		 System.out.println("seconfMin :: "+ seconfMin);
+	
+	//	 9) How do you merge two unsorted arrays into single sorted array using Java 8 streams?	 
+		 
+		 
+		 int[] a = new int[] {4, 2, 7, 1};
+         
+	     int[] b = new int[] {8, 3, 9, 5};
+	     
+	    int thirdArray[]= IntStream.concat(Arrays.stream(a),Arrays.stream(b)).sorted().toArray();
+		System.out.println(Arrays.toString(thirdArray));
+		
+	//	10) How do you merge two unsorted arrays into single sorted array without duplicates?
+		int[] a1 = new int[] {4, 2, 5, 1};
+        int[] b1 = new int[] {8, 1, 9, 5};
+        int res2[] = IntStream.concat(Arrays.stream(a1), Arrays.stream(b1)).distinct().sorted().toArray();
+		System.out.println("res2 :: "+ Arrays.toString(res2));
+		
+        int res3[] = IntStream.concat(Arrays.stream(a1), Arrays.stream(b1)).sorted().toArray();
+		System.out.println("res3 :: "+ Arrays.toString(res3));
+		
+	//	11) How do you get three maximum numbers and three minimum numbers from the given list of integers?
+		List<Integer> three_maximum_min = Arrays.asList(45, 12, 56, 15, 24, 75, 31, 89);
+		List<Integer> sortedData = three_maximum_min.stream().sorted().collect(Collectors.toList());
+		
+		System.out.println("sortedData ::" + sortedData);
+		
+		System.out.println();
+		
+		three_maximum_min.stream().sorted(Comparator.naturalOrder()).limit(3).forEach(System.out::println); 
+		System.out.println();
+		three_maximum_min.stream().sorted(Comparator.reverseOrder()).limit(3).forEach(System.out::println);
+		
+	//	12) Java 8 program to check if two strings are anagrams or not?	
+		
+		String s1 = "RaceCar";
+        String s2 = "CarRace";
+        String value1 = Stream.of(s1.split("")).map(String::toUpperCase).sorted().collect(Collectors.joining());
+        
+        String value2 = Stream.of(s2.split("")).map(String::toUpperCase).sorted().collect(Collectors.joining());
+        
+        System.out.println("value1 :: "+ value1);
+        System.out.println("value2 :: "+ value2);
+		
+		if(value1.equals(value2)) {
+			System.out.println("strings are anagrams ");
+		}else {
+			System.out.println("strings are NOT anagrams ");
+		}
+	//	13) Find sum of all digits of a number in Java 8?
+		int i = 15623;
+		Integer sum = Stream.of(String.valueOf(i).split("")).collect(Collectors.summingInt(Integer::parseInt));
+		System.out.println("SUM :: " +sum);
+		
+		IntSummaryStatistics sum2= Stream.of(String.valueOf(i).split("")).collect(Collectors.summarizingInt(Integer::parseInt));
+		System.out.println( sum2);
+		System.out.println("getSum "+ sum2.getSum());
+		System.out.println("getAverage "+ sum2.getAverage());
+		System.out.println("getMax "+ sum2.getMax());
+		System.out.println("getMin "+ sum2.getMin());
+		System.out.println("getCount "+ sum2.getCount());
+		
+		System.out.println();
+	//	14) Find second largest number in an integer array?	
+		List<Integer> Find_second_largest_number = Arrays.asList(45, 12, 56, 15, 24, 75, 31, 89);
+		Integer maxsecondNumber = Find_second_largest_number.stream().sorted(Comparator.reverseOrder()).skip(1).findFirst().get();
+		System.out.println("maxsecondNumber :: "+ maxsecondNumber);
+		
+		List<Integer> collect = Find_second_largest_number.stream().sorted().collect(Collectors.toList());
+		System.out.println("collect :: "+ collect);
+		// find min 3 number
+		List<Integer> find_min_3_number = Find_second_largest_number.stream().sorted(Comparator.naturalOrder()).limit(3).collect(Collectors.toList());
+		System.out.println("find_min_3_number :: "+ find_min_3_number);
+		
+		//	find_max_3_number
+		List<Integer> find_max_3_number = Find_second_largest_number.stream().sorted(Comparator.reverseOrder()).limit(3).collect(Collectors.toList());
+		System.out.println("find_max_3_number :: " + find_max_3_number);
+		
+	//	15) Given a list of strings, sort them according to increasing order of their length?	
+		 List<String> list_Of_Strings = Arrays.asList("Java", "Python", "C#", "HTML", "Kotlin", "C++", "COBOL", "C");
+		 List<String> increasing_order_length = list_Of_Strings.stream().sorted(Comparator.comparing(String::length)).collect(Collectors.toList());
+		System.out.println("increasing_order_length :: "+ increasing_order_length);
+		
+		String max_string = list_Of_Strings.stream().max(Comparator.comparing(String::length)).get();
+		System.out.println("max_string :: "+ max_string);
+		
+		String min_string = list_Of_Strings.stream().min(Comparator.comparing(String::length)).get();
+		System.out.println("min_string :: "+ min_string);
+		
+		List<String> naturalOrder = list_Of_Strings.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+		System.out.println("naturalOrder :: "+ naturalOrder);
+		
+		String chhotaString = list_Of_Strings.stream().sorted(Comparator.naturalOrder()).findFirst().get();
+		System.out.println("chhotaString :: "+ chhotaString);
+		
+		List<String> reverseOrder = list_Of_Strings.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+		System.out.println("reverseOrder :: "+ reverseOrder);
+		
+		String badhaString = list_Of_Strings.stream().sorted(Comparator.reverseOrder()).findFirst().get();
+		System.out.println("badhaString :: "+ badhaString);
+		
+			 
+=========================================	
+
+	//Write the logic each char count in below String?
+/*
+	String str="Karthik jayaprakasam";
+	SequencedMap<Character,Long> map = str.toLowerCase().chars().mapToObj(c->(char)c)
+	.collect(Collectors.groupingBy(Function.identity(),LinkedHashMap::new,Collectors.counting()));
+	
+	System.out.println(map);
+	
+	String Str = "J@av8&a5fe5a*9";
+	String alphatbetsChars = Str.chars().mapToObj(c->String.valueOf((char)c)).filter(ch->ch.matches("[a-zA-z]")).collect(Collectors.joining());
+	System.out.println("alphatbetsChars :: "+ alphatbetsChars);
+	
+	
+	String numbers = Str.chars().mapToObj(c-> String.valueOf((char)c)).filter(ch->ch.matches("[0-9]")).collect(Collectors.joining());
+	System.out.println("numbers :: "+ numbers);
+	
+	String specialCharacter = Str.chars().mapToObj(c-> String.valueOf((char)c)).filter(ch->!ch.matches("[a-zA-Z0-9]")).collect(Collectors.joining());
+	System.out.println("specialCharacter :: "+ specialCharacter);
+*/	
+	
+		 Stream.of("A", "B", "C", "D")
+         .filter(s -> {
+             System.out.println("Filtering: " + s);
+             return s.equals("C");
+         })
+        // .findFirst()
+         .ifPresent(System.out::println);
+
+		
+		
+	String str="my name is munna kumar. my profession is software engineer.";
+	
+	Map<String, Long> map = Arrays.stream(str.replace(".", " ").split(" ")).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+	map.forEach((key,value) -> System.out.println(key +" = "+value));
+	
+	---------------------------
+	/*	
+	Map<Character, Long> map = str.toLowerCase().replace(" ", "").chars().mapToObj(c->(char)c)
+			.collect(Collectors.groupingBy(Function.identity(),LinkedHashMap::new,Collectors.counting()));
+	System.out.println(map);
+		
+	//Display separatly alphabets, numerics and special charaters?
+
+	String Str = "J@av8&a5fe5a*9";
+	String alphabets = Str.chars().mapToObj(c->String.valueOf((char)c)).filter(ch->ch.matches("[a-zA-Z]")).collect(Collectors.joining());
+	System.out.println("alphabets :: "+alphabets);
+	
+	String number = Str.chars().mapToObj(c->String.valueOf((char)c)).filter(ch->ch.matches("[0-9]")).collect(Collectors.joining());
+	System.out.println("number :: "+number);
+	
+	String special = Str.chars().mapToObj(c->String.valueOf((char)c)).filter(ch->! ch.matches("[a-zA-Z0-9]")).collect(Collectors.joining());
+	System.out.println("special :: "+special);
+*/		
+
+String s1 = "aabccaaa";
+	List<String> list = new ArrayList<>();
+	int count=1;
+	for(int i=1; i<=s1.length();i++) {
+		if(i< s1.length() && s1.charAt(i) == s1.charAt(i-1)) {
+			count++;
+		}
+		else {
+			list.add(s1.charAt(i-1)+""+count);
+			count=1;
+		}
+	}
+	System.out.println(list);
+	String result = list.stream().collect(Collectors.joining());
+	System.out.println(result);
+	
+OUTPUT::
+[a2, b1, c2, a3]
+a2b1c2a3	
+
+//	Write the logic each char count in below String?
+
+	String str="Karthik jayaprakasam";
+	Map<Character, Long> map = str.toLowerCase().chars().mapToObj(c->(char)c)
+			.collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+	System.out.println(map);
+	
+	System.out.println();
+	String strinput ="my name is munna kumar. my profession is software engineer.";
+	Map<String, Long> map2 = Arrays.stream(strinput.replace(".", "").split(" "))
+			.collect(Collectors.groupingBy(Function.identity(),LinkedHashMap::new ,Collectors.counting()));
+	map2.forEach((key,val) -> System.out.println(key +" : "+val));
+	
+			 
+	System.out.println();
+	//		Display separatly alphabets, numerics and special charaters?
+
+	String seprateChars = "J@av8&a5fe5a*9";
+	String alphabet = seprateChars.chars().mapToObj(c-> String.valueOf((char)c)).filter(ch-> ch.matches("[a-zA-Z]")).collect(Collectors.joining());
+	System.out.println("alphabet :: "+alphabet);
+	
+	String numbers = seprateChars.chars().mapToObj(c -> String.valueOf((char)c)).filter(ch->ch.matches("[0-9]")).collect(Collectors.joining());
+	System.out.println(numbers);
+	
+	System.out.println();
+	String specialCharacter = seprateChars.chars().mapToObj(c->String.valueOf((char)c)).filter(ch-> !ch.matches("[a-zA-Z0-9]")).collect(Collectors.joining());
+	System.out.println(specialCharacter);
+	
+	System.out.println();
+	
+	String s1 = "aabccaaa";
+	int count=1;
+	List<String> list = new ArrayList<>();
+	for(int i=1;i<=s1.length();i++) {
+		if(i<s1.length() && s1.charAt(i) == s1.charAt(i-1)) {
+			count++;
+		}else {
+			list.add(s1.charAt(i-1) +""+count);
+			count=1;
+		}
+	}
+	System.out.println(list);
+	String collect = list.stream().collect(Collectors.joining());
+	System.out.println(collect);
+	
+	
+	
+
+=========================================
+//	find first non repeating char from given string using stream api
+		 
+		String input = "aabbcdeffg";
+		Map<Character,Long> map = input.chars().mapToObj(c->(char)c)
+				.collect(Collectors.groupingBy(Function.identity(),LinkedHashMap::new,Collectors.counting()));
+		Character non_repeating_character = map.entrySet().stream().filter(value->value.getValue()==1).map(key->key.getKey()).findFirst().get();
+		System.out.println(non_repeating_character);
+		
+		// repeated character
+		Map<Character,Long> map2 = input.chars().mapToObj(c->(char)c)
+				.collect(Collectors.groupingBy(Function.identity(),LinkedHashMap::new,Collectors.counting()));
+		
+		Character repeated_character = map2.entrySet().stream().filter(value -> value.getValue()>1).map(key->key.getKey()).findFirst().get();
+		System.out.println(repeated_character);
+		
+		//riverse string word wise--
+		//input =  "Munna is a developer"
+		//output = "developer a is Munna" -
+		String inputData =  "Munna is a developer";
+		List<String> asList = Arrays.asList(inputData.split(" "));
+		System.out.println(asList);
+		Collections.reverse(asList);
+		System.out.println(asList);
+		String result = asList.stream().collect(Collectors.joining(" "));
+		System.out.println(result);
+		
+		
+		
+		
+=========================================	
+	String str="javaprogramming";
+		StringBuilder reverse = new StringBuilder(str).reverse();
+		System.out.println(reverse);
+		
+		Map<Character, Long> map = str.chars().mapToObj(c->(char)c).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+		System.out.println(map);
+		
+		System.out.println();
+		String [] arr= {"java","abc","spring","hibernate","spring","hibernate"};
+		Map<String, Long> map2 = Arrays.stream(arr).collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+		System.out.println(map2);
+		System.out.println("arr ");
+		map2.forEach((key,val)->System.out.println(key+" : "+val));
+		
+		System.out.println();
+		System.out.println("list ");
+		List<String> list = Arrays.asList("java","spring","hibernate","spring","hibernate","abc","microservices");
+		Map<String, Long> map3 = list.stream().collect(Collectors.groupingBy(Function.identity(),Collectors.counting()));
+		map3.forEach((key,val)->System.out.println(key+" : "+val));
+		
+		System.out.println();
+		map3.entrySet().stream().filter(value->value.getValue()>1).forEach(System.out::println);
+		
+		System.out.println();
+		
+		List<List<Integer>> of = List.of(List.of(1,2),List.of(3,4,5),List.of(7,8,8,9,9));
+		List<Integer> collect = of.stream().flatMap(Collection::stream).collect(Collectors.toList());
+		System.out.println(collect);
+		
+		Integer secondMax = collect.stream().map(Integer::intValue).distinct().sorted(Comparator.reverseOrder()).skip(1).findFirst().get();
+		System.out.println(secondMax);
+		
+		
+		System.out.println();
+		System.out.println("Maxstring");
+		String Maxstring = list.stream().max(Comparator.comparing(String::length)).get();
+		System.out.println(Maxstring);
+		String Minstring = list.stream().min(Comparator.comparing(String::length)).get();
+		System.out.println(Minstring);
+		
+		System.out.println();
+		System.out.println("Anagram Check");
+		String s1="ana";
+		String s2="aana";
+		boolean isAnnagram = s1.chars().sorted().toArray().equals(s2.chars().sorted().toArray());
+		
+		System.out.println("isAnnagram :: "+isAnnagram);
+		boolean equals = Arrays.equals(s1.chars().sorted().toArray(), s2.chars().sorted().toArray());
+		System.out.println("isAnnagram :: equals ::  "+equals);
+		
+
+		Map<Boolean, List<Integer>> mapOF = collect.stream().collect(Collectors.partitioningBy(n -> n % 2 == 0));
+		System.out.println(mapOF);
+		List<Integer> even = mapOF.get(true);
+		List<Integer> odd = mapOF.get(false);
+		System.out.println(even);
+		System.out.println(odd);
+		
+		System.out.println();
+		System.out.println("String strchar=\"java\";");
+		String strchar="java";
+		Character c =strchar.chars().mapToObj(ch -> (char) ch)
+		.collect(Collectors.groupingBy(ch -> ch,LinkedHashMap::new,Collectors.counting()))
+       .entrySet().stream()
+       .filter(e -> e.getValue() == 1)
+       //.findFirst()
+       //.get().getKey();
+       .map(key->key.getKey())
+       .findFirst()
+       .get();
+		
+		System.out.println(c);
+
+		System.out.println();
+		System.out.println("Word Count Problem");
+
+		//	14. Word Count Problem
+		String text = "java is java best language";
+
+		Map<String, Long> map_Word_Count_Problem = 
+				Arrays.stream(text.split(" ")).collect(Collectors.groupingBy(w -> w, Collectors.counting()));
+		System.out.println(map_Word_Count_Problem);
+		
+		
+		//	15. Palindrome Check
+		System.out.println("Palindrome Check");
+		String Palindrome="madam";
+		boolean isPalindrome = Palindrome.equals(new StringBuffer(Palindrome).reverse().toString());
+		System.out.println("isPalindrome :: "+isPalindrome);
+		
+
+		//List<Integer> flat =of.stream().flatMap(Collection::stream).collect(Collectors.toList());
+
+		
+	/*
+	 
+		List<String> list= Arrays.asList(input.split(" "));
+		
+		System.out.println(list);
+		
+		Collections.reverse(list);
+		String output = list.stream().collect(Collectors.joining(" "));
+		System.out.println(output);
+	*/
+	
+=========================================	
+=========================================	
+=========================================	
+=========================================	
+=========================================	
+32 Questions Java 8 Interview Sample Coding Questions
+https://javaconceptoftheday.com/java-8-interview-sample-coding-questions/
+
+61		60+ Java 8 Interview Questions And Answers
+
+https://javaconceptoftheday.com/java-8-interview-questions-and-answers/
+
+Solving Real Time Queries Using Java 8 Features -Employee Management System
+
+https://javaconceptoftheday.com/solving-real-time-queries-using-java-8-features-employee-management-system/
+
+https://javaconceptoftheday.com/java-8-spliterator/
+
+https://javaconceptoftheday.com/java-8-stringjoiner-string-join-collectors-joining/
+
+	 
+=========================================	
+
+AWS
+DevOps with AWS
+1>	https://www.ashokit.in/student/class-information/143/31osfd79sdf/32-DevOps-AWS-6PM-06-Jan-25-FA
+AWS RDS
+2>	blob:https://www.ashokit.in/304c470d-a276-4264-bcab-e8a2f50c0696
+AWS S3 (Simple Storage Service)	
+blob:https://www.ashokit.in/2f1903b7-7e7e-4932-a0dd-1cdda410adbf	
+
+IAM:
+blob:https://www.ashokit.in/103d962b-d3fc-4a0f-8cd7-52232e567056
+
+FAQ:
+blob:https://www.ashokit.in/d8778f13-8e2c-4850-988f-f6a0931e6f3b
+
+Javatechie Repository
+cqrs-design-pattern
+https://github.com/Java-Techie-jt/cqrs-design-pattern/tree/main/product-query-service/src/main/java/com/javatechie
+
+spring-boot-multiple-datasource 
+https://github.com/Java-Techie-jt/spring-boot-multiple-datasource 
+
+All Repository
+https://github.com/orgs/Java-Techie-jt/repositories
+
+
+Java 8 Interview Sample Coding Questions
+https://javaconceptoftheday.com/java-8-interview-sample-coding-questions/
+
+
+60+ Java 8 Interview Questions And Answers
+https://javaconceptoftheday.com/java-8-interview-questions-and-answers/
+
+Solving Real Time Queries Using Java 8 Features -Employee Management System
+https://javaconceptoftheday.com/solving-real-time-queries-using-java-8-features-employee-management-system/
